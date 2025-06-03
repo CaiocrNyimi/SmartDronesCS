@@ -5,7 +5,7 @@ namespace SmartDrones.Application.DTOs
 {
     public class DroneDto
     {
-        public Guid? Id { get; set; }
+        public long Id { get; set; }
 
         [Required(ErrorMessage = "O identificador é obrigatório.")]
         [StringLength(50, ErrorMessage = "O identificador deve ter no máximo 50 caracteres.")]
@@ -16,6 +16,5 @@ namespace SmartDrones.Application.DTOs
         public string Model { get; set; } = string.Empty;
 
         public string? Status { get; set; }
-        public DateTime? LastActivity { get; set; }
     }
 }

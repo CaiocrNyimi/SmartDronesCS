@@ -28,13 +28,13 @@ namespace SmartDrones.Application.Services
             return _mapper.Map<IEnumerable<SensorDataDto>>(sensorData);
         }
 
-        public async Task<SensorDataDto?> GetSensorDataByIdAsync(Guid id)
+        public async Task<SensorDataDto?> GetSensorDataByIdAsync(long id)
         {
             var sensorData = await _sensorDataRepository.GetByIdAsync(id);
             return _mapper.Map<SensorDataDto>(sensorData);
         }
 
-        public async Task<IEnumerable<SensorDataDto>> GetSensorDataByDroneIdAsync(Guid droneId)
+        public async Task<IEnumerable<SensorDataDto>> GetSensorDataByDroneIdAsync(long droneId)
         {
             var sensorData = await _sensorDataRepository.GetByDroneIdAsync(droneId);
             return _mapper.Map<IEnumerable<SensorDataDto>>(sensorData);
@@ -63,23 +63,22 @@ namespace SmartDrones.Application.Services
             return _mapper.Map<SensorDataDto>(sensorData);
         }
 
-        public async Task UpdateSensorDataAsync(SensorDataDto sensorDataDto)
+        public async Task<SensorDataDto> UpdateSensorDataAsync(SensorDataDto sensorDataDto)
         {
-            if (sensorDataDto.Id == null || sensorDataDto.Id == Guid.Empty)
-                throw new ArgumentException("ID do dado de sensor é obrigatório para atualização.");
-
-            var existingSensorData = await _sensorDataRepository.GetByIdAsync(sensorDataDto.Id.Value);
+            var existingSensorData = await _sensorDataRepository.GetByIdAsync(sensorDataDto.Id);
             if (existingSensorData == null)
             {
                 throw new ApplicationException($"Dado de sensor com ID {sensorDataDto.Id} não encontrado.");
             }
 
-            existingSensorData.UpdateLocation(sensorDataDto.Latitude, sensorDataDto.Longitude);
+            _mapper.Map(sensorDataDto, existingSensorData);
 
             await _sensorDataRepository.UpdateAsync(existingSensorData);
+            
+            return _mapper.Map<SensorDataDto>(existingSensorData);
         }
 
-        public async Task DeleteSensorDataAsync(Guid id)
+        public async Task DeleteSensorDataAsync(long id)
         {
             var sensorData = await _sensorDataRepository.GetByIdAsync(id);
             if (sensorData == null)

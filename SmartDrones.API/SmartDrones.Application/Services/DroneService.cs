@@ -27,7 +27,7 @@ namespace SmartDrones.Application.Services
             return _mapper.Map<IEnumerable<DroneDto>>(drones);
         }
 
-        public async Task<DroneDto?> GetDroneByIdAsync(Guid id)
+        public async Task<DroneDto?> GetDroneByIdAsync(long id)
         {
             var drone = await _droneRepository.GetByIdAsync(id);
             return _mapper.Map<DroneDto>(drone);
@@ -43,27 +43,22 @@ namespace SmartDrones.Application.Services
             return _mapper.Map<DroneDto>(drone);
         }
 
-        public async Task UpdateDroneAsync(DroneDto droneDto)
+        public async Task<DroneDto> UpdateDroneAsync(DroneDto droneDto)
         {
-            if (droneDto.Id == null || droneDto.Id == Guid.Empty)
-                throw new ArgumentException("ID do drone é obrigatório para atualização.");
-
-            var existingDrone = await _droneRepository.GetByIdAsync(droneDto.Id.Value);
+            var existingDrone = await _droneRepository.GetByIdAsync(droneDto.Id);
             if (existingDrone == null)
             {
                 throw new ApplicationException($"Drone com ID {droneDto.Id} não encontrado.");
             }
 
-            existingDrone.UpdateDetails(droneDto.Identifier, droneDto.Model);
-            if (droneDto.Status != null)
-            {
-                existingDrone.UpdateStatus(droneDto.Status);
-            }
+            _mapper.Map(droneDto, existingDrone); 
 
             await _droneRepository.UpdateAsync(existingDrone);
+            
+            return _mapper.Map<DroneDto>(existingDrone); 
         }
 
-        public async Task DeleteDroneAsync(Guid id)
+        public async Task DeleteDroneAsync(long id)
         {
             var drone = await _droneRepository.GetByIdAsync(id);
             if (drone == null)

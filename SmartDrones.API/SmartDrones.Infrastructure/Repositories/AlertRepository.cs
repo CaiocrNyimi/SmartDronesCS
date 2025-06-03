@@ -23,7 +23,7 @@ namespace SmartDrones.Infrastructure.Repositories
             return await _context.Alerts.Include(a => a.Drone).ToListAsync();
         }
 
-        public async Task<Alert?> GetByIdAsync(Guid id)
+        public async Task<Alert?> GetByIdAsync(long id)
         {
             return await _context.Alerts.Include(a => a.Drone).FirstOrDefaultAsync(a => a.Id == id);
         }

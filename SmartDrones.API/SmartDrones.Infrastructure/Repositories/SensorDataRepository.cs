@@ -23,12 +23,12 @@ namespace SmartDrones.Infrastructure.Repositories
             return await _context.SensorData.ToListAsync();
         }
 
-        public async Task<SensorData?> GetByIdAsync(Guid id)
+        public async Task<SensorData?> GetByIdAsync(long id)
         {
             return await _context.SensorData.FirstOrDefaultAsync(sd => sd.Id == id);
         }
 
-        public async Task<IEnumerable<SensorData>> GetByDroneIdAsync(Guid droneId)
+        public async Task<IEnumerable<SensorData>> GetByDroneIdAsync(long droneId)
         {
             return await _context.SensorData
                                  .Where(sd => sd.DroneId == droneId)

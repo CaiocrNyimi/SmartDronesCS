@@ -6,10 +6,10 @@ namespace SmartDrones.Application.DTOs
 {
     public class AlertDto
     {
-        public Guid? Id { get; set; }
+        public long Id { get; set; }
 
         [Required(ErrorMessage = "O ID do drone é obrigatório.")]
-        public Guid DroneId { get; set; }
+        public long DroneId { get; set; }
         public DateTime? Timestamp { get; set; }
 
         [Required(ErrorMessage = "A mensagem do alerta é obrigatória.")]

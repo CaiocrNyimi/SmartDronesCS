@@ -1,4 +1,5 @@
-﻿using SmartDrones.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using SmartDrones.Domain.Entities;
 using SmartDrones.Domain.Interfaces;
 using SmartDrones.Infrastructure.Data;
 using System;
@@ -25,7 +26,7 @@ namespace SmartDrones.Infrastructure.Repositories
                                  .ToListAsync();
         }
 
-        public async Task<Drone?> GetByIdAsync(Guid id)
+        public async Task<Drone?> GetByIdAsync(long id)
         {
             return await _context.Drones
                                  .Include(d => d.SensorData)
@@ -41,7 +42,7 @@ namespace SmartDrones.Infrastructure.Repositories
 
         public async Task UpdateAsync(Drone drone)
         {
-            _context.Drones.Update(drone);
+            _context.Entry(drone).State = EntityState.Modified;
             await _context.SaveChangesAsync();
         }
 

@@ -8,10 +8,10 @@ namespace SmartDrones.Application.Interfaces
     public interface ISensorDataService
     {
         Task<IEnumerable<SensorDataDto>> GetAllSensorDataAsync();
-        Task<SensorDataDto?> GetSensorDataByIdAsync(Guid id);
-        Task<IEnumerable<SensorDataDto>> GetSensorDataByDroneIdAsync(Guid droneId);
+        Task<SensorDataDto?> GetSensorDataByIdAsync(long id);
+        Task<IEnumerable<SensorDataDto>> GetSensorDataByDroneIdAsync(long droneId);
         Task<SensorDataDto> AddSensorDataAsync(SensorDataDto sensorDataDto);
-        Task UpdateSensorDataAsync(SensorDataDto sensorDataDto);
-        Task DeleteSensorDataAsync(Guid id);
+        Task<SensorDataDto> UpdateSensorDataAsync(SensorDataDto sensorDataDto);
+        Task DeleteSensorDataAsync(long id);
     }
 }

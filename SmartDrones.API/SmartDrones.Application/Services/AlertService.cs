@@ -1,9 +1,8 @@
-﻿using SmartDrones.Application.DTOs;
+﻿using AutoMapper;
+using SmartDrones.Application.DTOs;
 using SmartDrones.Application.Interfaces;
 using SmartDrones.Domain.Entities;
-using SmartDrones.Domain.Enums;
 using SmartDrones.Domain.Interfaces;
-using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -13,13 +12,11 @@ namespace SmartDrones.Application.Services
     public class AlertService : IAlertService
     {
         private readonly IAlertRepository _alertRepository;
-        private readonly IDroneRepository _droneRepository;
         private readonly IMapper _mapper;
 
-        public AlertService(IAlertRepository alertRepository, IDroneRepository droneRepository, IMapper mapper)
+        public AlertService(IAlertRepository alertRepository, IMapper mapper)
         {
             _alertRepository = alertRepository;
-            _droneRepository = droneRepository;
             _mapper = mapper;
         }
 
@@ -29,7 +26,7 @@ namespace SmartDrones.Application.Services
             return _mapper.Map<IEnumerable<AlertDto>>(alerts);
         }
 
-        public async Task<AlertDto?> GetAlertByIdAsync(Guid id)
+        public async Task<AlertDto> GetAlertByIdAsync(long id)
         {
             var alert = await _alertRepository.GetByIdAsync(id);
             return _mapper.Map<AlertDto>(alert);
@@ -37,71 +34,49 @@ namespace SmartDrones.Application.Services
 
         public async Task<AlertDto> CreateAlertAsync(AlertDto alertDto)
         {
-            var droneExists = await _droneRepository.GetByIdAsync(alertDto.DroneId) != null;
-            if (!droneExists)
-            {
-                throw new ApplicationException($"Drone com ID {alertDto.DroneId} não encontrado. Não é possível criar alerta.");
-            }
-
-            var alert = new Alert(
-                alertDto.DroneId,
-                alertDto.Message,
-                alertDto.RiskLevel,
-                alertDto.Latitude,
-                alertDto.Longitude
-            );
-
+            var alert = _mapper.Map<Alert>(alertDto);
             await _alertRepository.AddAsync(alert);
             return _mapper.Map<AlertDto>(alert);
         }
 
-        public async Task UpdateAlertAsync(AlertDto alertDto)
+        public async Task<AlertDto> UpdateAlertAsync(AlertDto alertDto)
         {
-            if (alertDto.Id == null || alertDto.Id == Guid.Empty)
-                throw new ArgumentException("ID do alerta é obrigatório para atualização.");
-
-            var existingAlert = await _alertRepository.GetByIdAsync(alertDto.Id.Value);
+            var existingAlert = await _alertRepository.GetByIdAsync(alertDto.Id);
             if (existingAlert == null)
             {
                 throw new ApplicationException($"Alerta com ID {alertDto.Id} não encontrado.");
             }
 
-            existingAlert.UpdateMessage(alertDto.Message);
-            existingAlert.UpdateRiskLevel(alertDto.RiskLevel);
-            if (existingAlert.IsResolved != alertDto.IsResolved)
-            {
-                if (alertDto.IsResolved)
-                {
-                    existingAlert.ResolveAlert();
-                }
-            }
-
+            _mapper.Map(alertDto, existingAlert);
+            
             await _alertRepository.UpdateAsync(existingAlert);
+            
+            return _mapper.Map<AlertDto>(existingAlert);
         }
 
-        public async Task DeleteAlertAsync(Guid id)
+        public async Task<AlertDto> ResolveAlertAsync(long id)
         {
             var alert = await _alertRepository.GetByIdAsync(id);
             if (alert == null)
             {
                 throw new ApplicationException($"Alerta com ID {id} não encontrado.");
             }
-            await _alertRepository.DeleteAsync(alert);
+
+            alert.IsResolved = true;
+
+            await _alertRepository.UpdateAsync(alert);
+
+            return _mapper.Map<AlertDto>(alert);
         }
 
-        public async Task ResolveAlertAsync(Guid alertId)
+        public async Task DeleteAlertAsync(long id)
         {
-            var alert = await _alertRepository.GetByIdAsync(alertId);
-            if (alert == null)
+            var existingAlert = await _alertRepository.GetByIdAsync(id);
+            if (existingAlert == null)
             {
-                throw new ApplicationException($"Alerta com ID {alertId} não encontrado.");
+                throw new ApplicationException($"Alerta com ID {id} não encontrado.");
             }
-
-            if (!alert.IsResolved)
-            {
-                alert.ResolveAlert();
-                await _alertRepository.UpdateAsync(alert);
-            }
+            await _alertRepository.DeleteAsync(existingAlert);
         }
     }
 }

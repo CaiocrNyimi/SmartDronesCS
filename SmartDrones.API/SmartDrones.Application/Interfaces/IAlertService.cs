@@ -8,10 +8,10 @@ namespace SmartDrones.Application.Interfaces
     public interface IAlertService
     {
         Task<IEnumerable<AlertDto>> GetAllAlertsAsync();
-        Task<AlertDto?> GetAlertByIdAsync(Guid id);
+        Task<AlertDto?> GetAlertByIdAsync(long id);
         Task<AlertDto> CreateAlertAsync(AlertDto alertDto);
-        Task UpdateAlertAsync(AlertDto alertDto);
-        Task DeleteAlertAsync(Guid id);
-        Task ResolveAlertAsync(Guid alertId);
+        Task<AlertDto> UpdateAlertAsync(AlertDto alertDto);
+        Task DeleteAlertAsync(long id);
+        Task<AlertDto> ResolveAlertAsync(long id);
     }
 }

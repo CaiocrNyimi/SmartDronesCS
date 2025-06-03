@@ -8,9 +8,9 @@ namespace SmartDrones.Application.Interfaces
     public interface IDroneService
     {
         Task<IEnumerable<DroneDto>> GetAllDronesAsync();
-        Task<DroneDto?> GetDroneByIdAsync(Guid id);
+        Task<DroneDto?> GetDroneByIdAsync(long id);
         Task<DroneDto> CreateDroneAsync(DroneDto droneDto);
-        Task UpdateDroneAsync(DroneDto droneDto);
-        Task DeleteDroneAsync(Guid id);
+        Task<DroneDto> UpdateDroneAsync(DroneDto droneDto);
+        Task DeleteDroneAsync(long id);
     }
 }

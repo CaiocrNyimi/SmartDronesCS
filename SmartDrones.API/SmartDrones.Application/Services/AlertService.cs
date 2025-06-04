@@ -26,10 +26,10 @@ namespace SmartDrones.Application.Services
             return _mapper.Map<IEnumerable<AlertDto>>(alerts);
         }
 
-        public async Task<AlertDto> GetAlertByIdAsync(long id)
+        public async Task<AlertDto?> GetAlertByIdAsync(long id)
         {
             var alert = await _alertRepository.GetByIdAsync(id);
-            return _mapper.Map<AlertDto>(alert);
+            return _mapper.Map<AlertDto?>(alert);
         }
 
         public async Task<AlertDto> CreateAlertAsync(AlertDto alertDto)
@@ -62,7 +62,7 @@ namespace SmartDrones.Application.Services
                 throw new ApplicationException($"Alerta com ID {id} não encontrado.");
             }
 
-            alert.IsResolved = true;
+            alert.IsResolved = true; // Assuming Alert entity has an IsResolved property
 
             await _alertRepository.UpdateAsync(alert);
 
@@ -74,7 +74,7 @@ namespace SmartDrones.Application.Services
             var existingAlert = await _alertRepository.GetByIdAsync(id);
             if (existingAlert == null)
             {
-                throw new ApplicationException($"Alerta com ID {id} não encontrado.");
+                throw new ApplicationException($"Alerta com ID {id} não encontrado para exclusão.");
             }
             await _alertRepository.DeleteAsync(existingAlert);
         }

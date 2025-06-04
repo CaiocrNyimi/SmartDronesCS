@@ -14,7 +14,7 @@ namespace SmartDrones.Domain.Entities
         public double Longitude { get; private set; }
         public DateTime Timestamp { get; private set; }
 
-        public Drone Drone { get; }
+        public Drone? Drone { get; }
 
         public SensorData(long droneId, double temperature, double humidity, double luminosity, bool smokeDetected, double latitude, double longitude)
         {

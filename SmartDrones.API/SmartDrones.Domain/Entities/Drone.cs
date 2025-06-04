@@ -6,9 +6,9 @@ namespace SmartDrones.Domain.Entities
     public class Drone
     {
         public long Id { get; }
-        public string Identifier { get; private set; }
-        public string Model { get; private set; }
-        public string Status { get; private set; }
+        public string Identifier { get; private set; } = string.Empty;
+        public string Model { get; private set; } = string.Empty;
+        public string Status { get; private set; } = string.Empty;
         public DateTime CreatedAt { get; private set; }
         public DateTime? UpdatedAt { get; private set; }
         public DateTime LastActivity { get; private set; } 

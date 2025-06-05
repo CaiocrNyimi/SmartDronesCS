@@ -12,7 +12,7 @@ A solução é construída com arquitetura em camadas, seguindo Clean Architectu
 
 ```mermaid
 graph TD
-    subgraph UI/Frontend [SmartDrones.Web (Razor Pages)]
+    subgraph UI/Frontend ["SmartDrones.Web (Razor Pages)"]
         A[Navegador] --> B[SmartDrones.Web]
     end
 

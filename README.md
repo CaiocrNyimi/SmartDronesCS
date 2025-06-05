@@ -10,75 +10,79 @@ A solução é construída com arquitetura em camadas, seguindo Clean Architectu
 
 - Diagrama de Arquitetura:
 
-graph TD
-    subgraph UI/Frontend [SmartDrones.Web (Razor Pages)]
-        A[Navegador] --> B[SmartDrones.Web]
-    end
+    ```mermaid
+    graph TD
+        subgraph UI/Frontend [SmartDrones.Web (Razor Pages)]
+            A[Navegador] --> B[SmartDrones.Web]
+        end
 
-    subgraph Backend [SmartDrones.API]
-        B --> C[SmartDrones.API - Controllers]
-        C --> D[SmartDrones.Application - Services & DTOs]
-        D --> E[SmartDrones.Domain - Entities & Interfaces]
-        D --> F[SmartDrones.Infrastructure - Repositories & DbContext]
-    end
+        subgraph Backend [SmartDrones.API]
+            B --> C[SmartDrones.API - Controllers]
+            C --> D[SmartDrones.Application - Services & DTOs]
+            D --> E[SmartDrones.Domain - Entities & Interfaces]
+            D --> F[SmartDrones.Infrastructure - Repositories & DbContext]
+        end
 
-    F --> G[Banco de Dados Relacional]
+        F --> G[Banco de Dados Relacional]
 
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style B fill:#bbf,stroke:#333,stroke-width:2px
-    style C fill:#ccf,stroke:#333,stroke-width:2px
-    style D fill:#ddf,stroke:#333,stroke-width:2px
-    style E fill:#eef,stroke:#333,stroke-width:2px
-    style F fill:#faf,stroke:#333,stroke-width:2px
-    style G fill:#fcf,stroke:#333,stroke-width:2px
+        style A fill:#f9f,stroke:#333,stroke-width:2px
+        style B fill:#bbf,stroke:#333,stroke-width:2px
+        style C fill:#ccf,stroke:#333,stroke-width:2px
+        style D fill:#ddf,stroke:#333,stroke-width:2px
+        style E fill:#eef,stroke:#333,stroke-width:2px
+        style F fill:#faf,stroke:#333,stroke-width:2px
+        style G fill:#fcf,stroke:#333,stroke-width:2px
+        ```
 
-    SmartDrones.Web: Aplicação web desenvolvida com Razor Pages, responsável pela interface com interação na API.
-    SmartDrones.API: Projeto de API RESTful que expõe os endpoints para gerenciamento de Drones, SensorData e Alerts.
-    SmartDrones.Application: Contém a lógica de negócio e os DTOs para transmitir entre as camadas. Define interfaces para a camada de domínio.
-    SmartDrones.Domain: Define as entidades (Drone, SensorData, Alert) e as interfaces dos repositórios.
-    SmartDrones.Infrastructure: Implementa as interfaces de repositório, gerenciando a persistência de dados com Entity Framework Core e SmartDronesDbContext.
-    Banco de Dados Relacional: O armazenamento dos dados da aplicação em Oracle Database (configurável via connection string).
+        SmartDrones.Web: Aplicação web desenvolvida com Razor Pages, responsável pela interface com interação na API.
+        SmartDrones.API: Projeto de API RESTful que expõe os endpoints para gerenciamento de Drones, SensorData e Alerts.
+        SmartDrones.Application: Contém a lógica de negócio e os DTOs para transmitir entre as camadas. Define interfaces para a camada de domínio.
+        SmartDrones.Domain: Define as entidades (Drone, SensorData, Alert) e as interfaces dos repositórios.
+        SmartDrones.Infrastructure: Implementa as interfaces de repositório, gerenciando a persistência de dados com Entity Framework Core e SmartDronesDbContext.
+        Banco de Dados Relacional: O armazenamento dos dados da aplicação em Oracle Database (configurável via connection string).
 
 - Diagrama de Entidade-Relacionamento:
 
-erDiagram
-    DRONE {
-        long Id PK
-        string Identifier
-        string Model
-        string Location
-        string Status
-        datetime CreatedAt
-        datetime UpdatedAt
-    }
+    ```mermaid
+    erDiagram
+        DRONE {
+            long Id PK
+            string Identifier
+            string Model
+            string Location
+            string Status
+            datetime CreatedAt
+            datetime UpdatedAt
+        }
 
-    SENSORDATA {
-        long Id PK
-        long DroneId FK
-        double Temperature
-        double Humidity
-        double Luminosity
-        boolean SmokeDetected
-        double Latitude
-        double Longitude
-        datetime Timestamp
-    }
+        SENSORDATA {
+            long Id PK
+            long DroneId FK
+            double Temperature
+            double Humidity
+            double Luminosity
+            boolean SmokeDetected
+            double Latitude
+            double Longitude
+            datetime Timestamp
+        }
 
-    ALERT {
-        long Id PK
-        long DroneId FK
-        string Message
-        string Severity
-        boolean IsResolved
-        datetime Timestamp
-    }
+        ALERT {
+            long Id PK
+            long DroneId FK
+            string Message
+            string Severity
+            boolean IsResolved
+            datetime Timestamp
+        }
 
-    DRONE ||--o{ SENSORDATA : "has many"
-    DRONE ||--o{ ALERT : "generates many"
+        DRONE ||--o{ SENSORDATA : "has many"
+        DRONE ||--o{ ALERT : "generates many"
+        ```
 
-    DRONE: Representa um drone, com um identificador único, modelo, localização e status.
-    SENSORDATA: Contém os dados coletados pelos sensores de um drone, como temperatura, umidade, luminosidade, detecção de fumaça, coordenadas geográficas e horário da coleta.
-    ALERT: Registra alertas gerados por um drone, incluindo mensagem, severidade, status de resolução e horário de emissão de alerta.
+        DRONE: Representa um drone, com um identificador único, modelo, localização e status.
+        SENSORDATA: Contém os dados coletados pelos sensores de um drone, como temperatura, umidade, luminosidade, detecção de fumaça, coordenadas geográficas e horário da coleta.
+        ALERT: Registra alertas gerados por um drone, incluindo mensagem, severidade, status de resolução e horário de emissão de alerta.
 
 - Desenvolvimento:
 

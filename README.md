@@ -20,7 +20,7 @@ graph TD
         B --> C[SmartDrones.API - Controllers]
         C --> D[SmartDrones.Application - Services & DTOs]
         D --> E[SmartDrones.Domain - Entities & Interfaces]
-        D --> F[SmartDrones.Infrastructure - Repositories & DbContext]
+        D --> F[SmartDaches.Infrastructure - Repositories & DbContext]
     end
 
     F --> G[Banco de Dados Relacional]

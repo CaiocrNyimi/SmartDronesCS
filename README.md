@@ -12,26 +12,26 @@ A solução é construída com arquitetura em camadas, seguindo Clean Architectu
 
 ```mermaid
 graph TD
-subgraph UI/Frontend [SmartDrones.Web (Razor Pages)]
-A[Navegador] --> B[SmartDrones.Web]
-end
+    subgraph UI/Frontend [SmartDrones.Web (Razor Pages)]
+        A[Navegador] --> B[SmartDrones.Web]
+    end
 
-subgraph Backend [SmartDrones.API]
-B --> C[SmartDrones.API - Controllers]
-C --> D[SmartDrones.Application - Services & DTOs]
-D --> E[SmartDrones.Domain - Entities & Interfaces]
-D --> F[SmartDrones.Infrastructure - Repositories & DbContext]
-end
+    subgraph Backend [SmartDrones.API]
+        B --> C[SmartDrones.API - Controllers]
+        C --> D[SmartDrones.Application - Services & DTOs]
+        D --> E[SmartDrones.Domain - Entities & Interfaces]
+        D --> F[SmartDrones.Infrastructure - Repositories & DbContext]
+    end
 
-F --> G[Banco de Dados Relacional]
+    F --> G[Banco de Dados Relacional]
 
-style A fill:#f9f,stroke:#333,stroke-width:2px
-style B fill:#bbf,stroke:#333,stroke-width:2px
-style C fill:#ccf,stroke:#333,stroke-width:2px
-style D fill:#ddf,stroke:#333,stroke-width:2px
-style E fill:#eef,stroke:#333,stroke-width:2px
-style F fill:#faf,stroke:#333,stroke-width:2px
-style G fill:#fcf,stroke:#333,stroke-width:2px
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#ccf,stroke:#333,stroke-width:2px
+    style D fill:#ddf,stroke:#333,stroke-width:2px
+    style E fill:#eef,stroke:#333,stroke-width:2px
+    style F fill:#faf,stroke:#333,stroke-width:2px
+    style G fill:#fcf,stroke:#333,stroke-width:2px
 ```
 
         SmartDrones.Web: Aplicação web desenvolvida com Razor Pages, responsável pela interface com interação na API.
